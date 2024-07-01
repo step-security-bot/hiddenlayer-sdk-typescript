@@ -1,5 +1,6 @@
 import { Configuration, DefaultConfig } from "../generated";
 import { ModelScanService } from "./services/ModelScanService";
+import { ModelService } from "./services/ModelService";
 
 export class HiddenLayerServiceClient {
     private clientId: string;
@@ -29,6 +30,7 @@ export class HiddenLayerServiceClient {
                 basePath: this.host
             });
         }
+        this.modelScanner = new ModelScanService(this.isSaaS);
     }
 
     static createSaaSClient(clientId: string, clientSecret: string, host?: string): HiddenLayerServiceClient {
@@ -40,7 +42,8 @@ export class HiddenLayerServiceClient {
     }
 
     readonly isSaaS: boolean;
-    readonly modelScanner: ModelScanService = new ModelScanService();
+    readonly modelScanner: ModelScanService;
+    readonly model: ModelService = new ModelService();
 
     /**
      * Check if the client is using the SaaS version of the HiddenLayer API.
